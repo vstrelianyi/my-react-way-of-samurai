@@ -4,20 +4,42 @@ import * as axios from 'axios';
 import userPhoto from '../../assets/images/user.png';
 
 export default class User extends Component {
+  componentDidMount = () => {
+    this.getUsers();
+  }
+
   getUsers = () => {
-    if ( !this.props.users.length ){
-      // console.log( 'getUsers' );
-      axios.get( 'https://social-network.samuraijs.com/api/1.0/users' )
-        .then( res => {
+    // console.log( 'getUsers' );
+    axios.get( `https://social-network.samuraijs.com/api/1.0/users?page${ this.props.currentPage }&count=${ this.props.pageSize }` )
+      .then( res => {
         // console.log( res.data.items );
-          this.props.setUsers( res.data.items );
-        } );
-    }
+        this.props.setUsers( res.data.items );
+      } );
+  }
+
+  setCurrentPage = ( page ) => {
+    this.props.setCurrentPageAC( page );
   }
 
   render () {
+    const pagesCount = Math.ceil( this.props.totalUsersCount / this.props.pageSize );
+    const pages = [];
+    for( let i=1; i<=pagesCount; i++ ){
+      pages.push( i );
+    }
     return(
       <div>
+        <ul className={ styles.listPagination }>
+          { pages.map( ( p, i ) => {
+            return (
+              <li
+                onClick={ () => this.props.setCurrentPage( i ) }
+                key={ i }
+                className={ this.props.currentPage === i ? styles.selectedPage : null }>{p}</li>
+            );
+          } )
+          }
+        </ul>
         <button onClick={ this.getUsers }>Get users</button>
         {
           this.props.users.map( u => <div key={ u.id }>
