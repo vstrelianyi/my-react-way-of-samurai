@@ -1,23 +1,30 @@
 import React from 'react';
 import styles from './users.module.css';
-import * as axios from 'axios';
 import userPhoto from '../../assets/images/user.png';
 
-const UsersFunc = ( props ) => {
+const Users = ( props ) => {
+  const pagesCount = Math.ceil( props.totalUsersCount / props.pageSize );
 
-  const getUsers = () => {
-    if ( !props.users.length ){
-      // console.log( 'getUsers' );
-      axios.get( 'https://social-network.samuraijs.com/api/1.0/users' )
-        .then( res => {
-        // console.log( res.data.items );
-          props.setUsers( res.data.items );
-        } );
-    }
-  };
+  const pages = [];
+  for( let i=1; i<=pagesCount; i++ ){
+    pages.push( i );
+  }
   return (
     <div>
-      <button onClick={ getUsers }>Get users</button>
+      <ul className={ styles.listPagination }>
+        { pages.map( ( p ) => {
+          // console.log( 'currentPage:', props.currentPage, 'p', p );
+          return (
+            <li
+              onClick={ () => props.onPageChanged( p ) }
+              key={ p }
+              className={ props.currentPage === p ? styles.selectedPage : null }
+            >{p}</li>
+          );
+        } )
+        }
+      </ul>
+      {/* <button onClick={ getUsers }>Get users</button> */}
       {
         props.users.map( u => <div key={ u.id }>
           <span>
@@ -51,4 +58,4 @@ const UsersFunc = ( props ) => {
   );
 };
 
-export default UsersFunc;
+export default Users;

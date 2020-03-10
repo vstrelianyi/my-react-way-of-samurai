@@ -2,12 +2,15 @@ const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
+const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
+const SET_IS_FETCHING = 'SET_IS_FETCHING';
 
 const initialState = {
   users: [ ],
   pageSize: 5,
-  totalUsersCount: 51,
-  currentPage: 2,
+  totalUsersCount: 21,
+  currentPage: 1,
+  isFetching: false,
 };
 
 const usersReducer = ( state = initialState, action ) => {
@@ -16,7 +19,7 @@ const usersReducer = ( state = initialState, action ) => {
     return {
       ...state,
       users: state.users.map( u => {
-        if ( u.id === action.userId ){
+        if ( u.id === action.payload ){
           return { ...u, followed: true, };
         }
         return u;
@@ -26,26 +29,34 @@ const usersReducer = ( state = initialState, action ) => {
     return {
       ...state,
       users: state.users.map( u => {
-        if ( u.id === action.userId ){
+        if ( u.id === action.payload ){
           return { ...u, followed: false, };
         }
         return u;
       } ),
     };
   case SET_USERS:{
-    return { ...state, users: [ ...state.users, ...action.users, ], };
+    return { ...state, users: action.payload, };
   }
   case SET_CURRENT_PAGE:{
-    return { ...state, currentPage: action.currentPage, };
+    return { ...state, currentPage: action.payload, };
+  }
+  case SET_TOTAL_USERS_COUNT:{
+    return { ...state, totalUsersCount: action.payload, };
+  }
+  case SET_IS_FETCHING:{
+    return { ...state, isFetching: action.payload, };
   }
   default:
     return state;
   }
 };
 
-export const followAC = ( userId ) => ( { type: FOLLOW, userId, } );
-export const unfollowAC = ( userId ) => ( { type: UNFOLLOW, userId, } );
-export const setUsersAC = ( users ) => ( { type: SET_USERS, users, } );
-export const setCurrentPageAC = ( currentPage ) => ( { type: SET_CURRENT_PAGE, currentPage, } );
+export const followAC = ( userId ) => ( { type: FOLLOW, payload: userId, } );
+export const unfollowAC = ( userId ) => ( { type: UNFOLLOW, payload: userId, } );
+export const setUsersAC = ( users ) => ( { type: SET_USERS, payload: users, } );
+export const setCurrentPageAC = ( pageNumber ) => ( { type: SET_CURRENT_PAGE, payload: pageNumber, } );
+export const setTotalUsersCountAC = ( totalCount ) => ( { type: SET_TOTAL_USERS_COUNT, payload: totalCount, } );
+export const setIsFetchingAC = ( value ) => ( { type: SET_IS_FETCHING, payload: value, } );
 
 export default usersReducer;
