@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { followAC, unfollowAC, setUsersAC, setCurrentPageAC, setTotalUsersCountAC, setIsFetchingAC } from '../../redux/users-reducer';
 import * as axios from 'axios';
 import Users from './Users.jsx';
-import Spinner from '../Spinner/Spinner.jsx';
 
 class UsersContainer extends Component {
   componentDidMount = () => {
@@ -12,6 +11,7 @@ class UsersContainer extends Component {
 
   getUsers = ( page, count ) => {
     this.props.setIsFetching( true );
+    this.props.setUsers( [] );
     axios.get( `https://social-network.samuraijs.com/api/1.0/users?page=${ page }&count=${ count }` )
       .then( res => {
         // console.log( res.data.items );
@@ -32,18 +32,16 @@ class UsersContainer extends Component {
 
   render () {
     return(
-      <>
-        { this.props.isFetching ? <Spinner/> : null }
-        <Users
-          totalUsersCount={ this.props.totalUsersCount }
-          pageSize={ this.props.pageSize }
-          currentPage={ this.props.currentPage }
-          onPageChanged={ this.onPageChanged }
-          users={ this.props.users }
-          unfollow={ this.props.unfollow }
-          follow={ this.props.follow }
-        />
-      </>
+      <Users
+        totalUsersCount={ this.props.totalUsersCount }
+        pageSize={ this.props.pageSize }
+        currentPage={ this.props.currentPage }
+        onPageChanged={ this.onPageChanged }
+        users={ this.props.users }
+        unfollow={ this.props.unfollow }
+        follow={ this.props.follow }
+        isFetching={ this.props.isFetching }
+      />
     );
   }
 }

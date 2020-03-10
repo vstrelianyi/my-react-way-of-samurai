@@ -1,3 +1,8 @@
+
+section.sectionUsers{
+  padding: 20px;
+}
+
 .userPhoto {
   width: 100px;
   height: 100px;
@@ -8,6 +13,7 @@ ul.listPagination{
   list-style-type: none;
   margin-left: -10px;
   margin-right: -10px;
+  padding: 0;
 }
 
 ul.listPagination li{
@@ -17,4 +23,17 @@ ul.listPagination li{
 
 li.selectedPage {
   color: red;
+}
+
+div.wrapperListUsers{
+  min-height: 300px;
+  position: relative;
+}
+ul.listUsers{
+  list-style-type: none;
+  padding: 0;
+}
+
+ul.listUsers li{
+  margin: 5px 0;
 }
