@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Profile from './Profile';
 import * as axios from 'axios';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import {
   setUserProfile
@@ -18,7 +19,7 @@ class ProfileContainer extends Component {
 
   getProfile = () => {
     // let userId = this.props.match.params.userId;
-    let userId =2;
+    let userId = this.props.match.params.userId;
     if ( !userId ){
       userId = 2;
     }
@@ -50,4 +51,6 @@ const mapStateToProps = ( state ) => {
   };
 };
 
-export default connect( mapStateToProps, { setUserProfile, } )( ProfileContainer );
+const WithUrlDataContainerComponent= withRouter( ProfileContainer );
+
+export default connect( mapStateToProps, { setUserProfile, } )( WithUrlDataContainerComponent );

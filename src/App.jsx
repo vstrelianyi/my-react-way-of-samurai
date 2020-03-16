@@ -23,7 +23,7 @@ const App = () => {
             render={ () => <DialogsContainer /> }
           />
 
-          <Route path='/profile'
+          <Route path='/profile/:userId?'
             render={ () => <ProfileContainer /> }
           />
 
