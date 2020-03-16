@@ -15,8 +15,8 @@ class UsersContainer extends Component {
     axios.get( `https://social-network.samuraijs.com/api/1.0/users?page=${ page }&count=${ count }` )
       .then( res => {
         // console.log( res.data.items );
-        this.props.setUsers( res.data.items );
         this.props.setIsFetching( false );
+        this.props.setUsers( res.data.items );
         // this.props.setTotalUsersCount( res.data.totalCount );
       } );
   }
