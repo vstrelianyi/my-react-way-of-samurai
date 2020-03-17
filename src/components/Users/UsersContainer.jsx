@@ -12,7 +12,7 @@ class UsersContainer extends Component {
   getUsers = ( page, count ) => {
     this.props.setIsFetching( true );
     this.props.setUsers( [] );
-    axios.get( `https://social-network.samuraijs.com/api/1.0/users?page=${ page }&count=${ count }` )
+    axios.get( `https://social-network.samuraijs.com/api/1.0/users?page=${ page }&count=${ count }`, { withCredentials: true, } )
       .then( res => {
         // console.log( res.data.items );
         this.props.setIsFetching( false );

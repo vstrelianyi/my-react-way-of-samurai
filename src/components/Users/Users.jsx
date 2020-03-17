@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import styles from './users.module.css';
 import userPhoto from '../../assets/images/user.png';
 
+import * as axios from 'axios';
+
 import Spinner from '../Spinner/Spinner.jsx';
 
 const Users = ( props ) => {
@@ -43,11 +45,26 @@ const Users = ( props ) => {
                     </div>
                     <div>
                       {u.followed
+
                         ? <button onClick={ () => {
-                          props.unfollow( u.id );
+                          console.log( 'unfollow' );
+                          axios.delete( `https://social-network.samuraijs.com/api/1.0/unfollow/${ u.id }`, { withCredentials: true, headers: { 'API-KEY' : '2938316e-42fb-4f4f-a882-a47c3bb0357b', }, } )
+                            .then( res => {
+                              if( res.data.resulCode === 0 ){
+                                props.unfollow( u.id );
+                              }
+                            } );
                         } }>Unfollow</button>
+
                         : <button onClick={ () => {
-                          props.follow( u.id );
+                          console.log( 'follow' );
+                          axios.post( `https://social-network.samuraijs.com/api/1.0/follow/${ u.id }`, null, { withCredentials: true, headers: { 'API-KEY': '2938316e-42fb-4f4f-a882-a47c3bb0357b', }, } )
+                            .then( res => {
+                              debugger;
+                              if( res.data.resulCode === 0 ){
+                                props.follow( u.id );
+                              }
+                            } );
                         } }>Follow</button>}
 
                     </div>
