@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import styles from './users.module.css';
 import userPhoto from '../../assets/images/user.png';
 
-import * as axios from 'axios';
+import { usersAPI } from '../../api/api';
 
 import Spinner from '../Spinner/Spinner.jsx';
 
@@ -12,7 +12,7 @@ const Users = ( props ) => {
   const pagesCount = Math.ceil( props.totalUsersCount / props.pageSize );
 
   const pages = [];
-  for( let i=1; i<=pagesCount; i++ ){
+  for( let i = 1; i <= pagesCount; i++ ){
     pages.push( i );
   }
   return (
@@ -36,6 +36,7 @@ const Users = ( props ) => {
           {
             props.users.map( u => {
               return(
+
                 <li key={ u.id }>
                   <span>
                     <div>
@@ -46,24 +47,25 @@ const Users = ( props ) => {
                     <div>
                       {u.followed
 
-                        ? <button onClick={ () => {
-                          console.log( 'unfollow' );
-                          axios.delete( `https://social-network.samuraijs.com/api/1.0/unfollow/${ u.id }`, { withCredentials: true, headers: { 'API-KEY' : '2938316e-42fb-4f4f-a882-a47c3bb0357b', }, } )
+                        ? <button disabled={ props.inProgress.some( id => id === u.id ) } onClick={ () => {
+                          props.toggleInProgress( true, u.id );
+                          usersAPI.unfollow( u.id )
                             .then( res => {
-                              if( res.data.resulCode === 0 ){
+                              if( res.resultCode === 0 ){
                                 props.unfollow( u.id );
                               }
+                              props.toggleInProgress( false, u.id );
                             } );
                         } }>Unfollow</button>
 
-                        : <button onClick={ () => {
-                          console.log( 'follow' );
-                          axios.post( `https://social-network.samuraijs.com/api/1.0/follow/${ u.id }`, null, { withCredentials: true, headers: { 'API-KEY': '2938316e-42fb-4f4f-a882-a47c3bb0357b', }, } )
+                        : <button disabled={ props.inProgress.some( id => id === u.id ) } onClick={ () => {
+                          props.toggleInProgress( true, u.id );
+                          usersAPI.follow( u.id )
                             .then( res => {
-                              debugger;
-                              if( res.data.resulCode === 0 ){
+                              if( res.resultCode === 0 ){
                                 props.follow( u.id );
                               }
+                              props.toggleInProgress( false, u.id );
                             } );
                         } }>Follow</button>}
 
@@ -71,6 +73,7 @@ const Users = ( props ) => {
                   </span>
                   <span>
                     <span>
+                      <div>id: { u.id }</div>
                       <div>{u.name}</div>
                       <div>{u.status}</div>
                     </span>
@@ -79,7 +82,9 @@ const Users = ( props ) => {
                       <div>{ 'city' }</div>
                     </span>
                   </span>
-                </li> );
+                </li>
+
+              );
             }
             )
           }
