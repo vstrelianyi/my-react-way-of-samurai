@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 import styles from './users.module.css';
 import userPhoto from '../../assets/images/user.png';
 
-import { usersAPI } from '../../api/api';
-
 import Spinner from '../Spinner/Spinner.jsx';
 
 const Users = ( props ) => {
@@ -25,7 +23,7 @@ const Users = ( props ) => {
               onClick={ () => props.onPageChanged( p ) }
               key={ p }
               className={ props.currentPage === p ? styles.selectedPage : null }
-            >{p}</li>
+            >{ p }</li>
           );
         } )
         }
@@ -45,29 +43,16 @@ const Users = ( props ) => {
                       </Link>
                     </div>
                     <div>
-                      {u.followed
+                      {
+                        u.followed
+                          ? <button
+                            disabled={ props.inProgress.some( id => id === u.id ) }
+                            onClick={ () => props.unfollow( u.id ) }>Unfollow</button>
 
-                        ? <button disabled={ props.inProgress.some( id => id === u.id ) } onClick={ () => {
-                          props.toggleInProgress( true, u.id );
-                          usersAPI.unfollow( u.id )
-                            .then( res => {
-                              if( res.resultCode === 0 ){
-                                props.unfollow( u.id );
-                              }
-                              props.toggleInProgress( false, u.id );
-                            } );
-                        } }>Unfollow</button>
-
-                        : <button disabled={ props.inProgress.some( id => id === u.id ) } onClick={ () => {
-                          props.toggleInProgress( true, u.id );
-                          usersAPI.follow( u.id )
-                            .then( res => {
-                              if( res.resultCode === 0 ){
-                                props.follow( u.id );
-                              }
-                              props.toggleInProgress( false, u.id );
-                            } );
-                        } }>Follow</button>}
+                          : <button
+                            disabled={ props.inProgress.some( id => id === u.id ) }
+                            onClick={ () => props.follow( u.id ) }>Follow</button>
+                      }
 
                     </div>
                   </span>

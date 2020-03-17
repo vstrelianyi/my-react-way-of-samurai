@@ -1,30 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { follow, unfollow, setUsers, setCurrentPage, setTotalUsersCount, setIsFetching, toggleInProgress } from '../../redux/users-reducer';
+import { follow, unfollow, setCurrentPage, getUsers } from '../../redux/users-reducer';
 import Users from './Users.jsx';
-import { usersAPI } from '../../api/api';
 
 class UsersContainer extends Component {
   componentDidMount = () => {
-    this.props.setIsFetching( true );
-    this.props.setUsers( [] );
-    usersAPI.getUsers( this.props.currentPage, this.props.pageSize )
-      .then( res => {
-        this.props.setIsFetching( false );
-        this.props.setUsers( res.items );
-      } );
-
+    this.props.getUsers( this.props.currentPage, this.props.pageSize );
   }
 
   onPageChanged = ( pageNumber ) => {
-    this.props.setCurrentPage( pageNumber );
-    this.props.setIsFetching( true );
-    this.props.setUsers( [] );
-    usersAPI.getUsers( pageNumber, this.props.pageSize )
-      .then( res => {
-        this.props.setIsFetching( false );
-        this.props.setUsers( res.items );
-      } );
+    this.props.getUsers( pageNumber, this.props.pageSize );
   }
 
   setCurrentPage = ( page ) => {
@@ -39,11 +24,10 @@ class UsersContainer extends Component {
         currentPage={ this.props.currentPage }
         onPageChanged={ this.onPageChanged }
         users={ this.props.users }
-        unfollow={ this.props.unfollow }
         follow={ this.props.follow }
+        unfollow={ this.props.unfollow }
         isFetching={ this.props.isFetching }
         inProgress = { this.props.inProgress }
-        toggleInProgress={ this.props.toggleInProgress }
       />
     );
   }
@@ -63,9 +47,6 @@ const mapStateToProps = ( state ) => {
 export default connect( mapStateToProps, {
   follow,
   unfollow,
-  setUsers,
   setCurrentPage,
-  setTotalUsersCount,
-  setIsFetching,
-  toggleInProgress,
+  getUsers,
 } )( UsersContainer );
