@@ -5,9 +5,9 @@ import { withRouter } from 'react-router-dom';
 // import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 
 import {
-  getUserProfile
-  // addPostActionCreator,
-  // updateNewPostTextActionCreator
+  getUserProfile,
+  getStatus,
+  updateStatus
 } from '../../redux/profile-reducer';
 
 import './Profile.module.css';
@@ -22,9 +22,12 @@ class ProfileContainer extends Component {
     // let userId = this.props.match.params.userId;
     let userId = this.props.match.params.userId;
     if ( !userId ){
-      userId = 6482;
+      // userId = 6482;
+      userId = 6500;
+      // userId = 2;
     }
     this.props.getUserProfile( userId );
+    this.props.getStatus( userId );
     // this.props.setIsFetching( true );
 
   }
@@ -33,20 +36,24 @@ class ProfileContainer extends Component {
     return(
       <section className="section">
         <Profile
-          // { ...this.props }
-          // setUserProfile={ setUserProfile }
+          { ...this.props }
+          status={ this.props.status }
           profile={ this.props.profile }
+          updateStatus={ this.props.updateStatus }
         />
       </section>
     );
   }
 }
 
-const mapStateToProps = ( state ) => ( { profile: state.profilePage.profile, } );
+const mapStateToProps = ( state ) => ( {
+  profile: state.profilePage.profile,
+  status: state.profilePage.status,
+} );
 
 export default
 compose(
-  connect( mapStateToProps, { getUserProfile, } ),
+  connect( mapStateToProps, { getUserProfile, getStatus, updateStatus, } ),
   withRouter
   // withAuthRedirect
 )( ProfileContainer );
