@@ -8,7 +8,7 @@ class ProfileStatus extends Component {
   }
 
   toggleEditMode = () => {
-    debugger;
+    // debugger;
     const newState = !this.state.editMode;
     this.setState( { editMode: newState, } );
   }
