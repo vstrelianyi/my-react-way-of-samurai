@@ -1,5 +1,5 @@
 import React from 'react';
-import Spinner from '../../Spinner/Spinner';
+import Spinner from '../../common/Spinner/Spinner';
 import styles from './ProfileInfo.module.css';
 import ProfileStatus from '../ProfileStatus/ProfileStatus';
 

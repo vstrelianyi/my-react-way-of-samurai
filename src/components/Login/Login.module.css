@@ -5,3 +5,9 @@
 .login .inputGroup {
   margin-bottom: 20px;
 }
+
+.formError{
+  border: 2px red solid;
+  padding: 5px;
+  color: red;
+}

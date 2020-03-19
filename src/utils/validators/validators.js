@@ -5,9 +5,9 @@ export const required = ( value ) => {
   return 'Field is required';
 };
 
-export const mexLength30 = ( value ) => {
-  if( value && value.length > 30 ){
-    return 'Max length is 30 symbols';
+export const maxLengthCreator = ( maxLength = 30 ) => ( value ) => {
+  if( value && value.length > maxLength ){
+    return `Max length is ${ maxLength } symbols`;
   }
   return undefined;
 };

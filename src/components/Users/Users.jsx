@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import styles from './users.module.css';
 import userPhoto from '../../assets/images/user.png';
 
-import Spinner from '../Spinner/Spinner.jsx';
+import Spinner from '../common/Spinner/Spinner.jsx';
 
 const Users = ( props ) => {
   const pagesCount = Math.ceil( props.totalUsersCount / props.pageSize );
