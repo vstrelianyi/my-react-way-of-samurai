@@ -7,6 +7,10 @@
     grid-template-rows: 60px 1fr;
     grid-template-columns: 2fr 10fr;
     /* grid-gap: 10px; */
+    min-height: 100vh;
+    position: relative;
+    width: 100%;
+    background-color: #aeaeae;
 }
 
 .app-wrapper-content {

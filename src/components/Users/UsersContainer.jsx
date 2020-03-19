@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { follow, unfollow, setCurrentPage, getUsers } from '../../redux/users-reducer';
 import Users from './Users.jsx';
 import { compose } from 'redux';
-import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 
 class UsersContainer extends Component {
   componentDidMount = () => {
@@ -47,7 +46,6 @@ const mapStateToProps = ( state ) => {
 };
 
 export default compose(
-  withAuthRedirect,
   connect( mapStateToProps, {
     follow,
     unfollow,

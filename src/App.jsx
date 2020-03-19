@@ -9,20 +9,28 @@ import DialogsContainer from './components/Dialogs/DialogsContainer';
 import UsersContainer from './components/Users/UsersContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import Login from './components/Login/Login';
+import Spinner from './components/common/Spinner/Spinner';
 
 import { withRouter } from 'react-router-dom';
 
 import { compose } from 'redux';
-import { getAuthUserData } from './redux/auth-reducer';
 import { connect } from 'react-redux';
+import { initializeApp } from './redux/app-reducer';
 
 class App extends Component {
 
   componentDidMount () {
-    this.props.getAuthUserData();
+    this.props.initializeApp();
   }
 
   render () {
+    if ( !this.props.initialized ){
+      return(
+        <div className='app-wrapper'>
+          <Spinner/>
+        </div>
+      );
+    }
     return (
       <div className='app-wrapper'>
         <HeaderContainer />
@@ -59,7 +67,11 @@ class App extends Component {
   }
 }
 
+const mapStateToProps = ( state ) => ( {
+  initialized: state.app.initialized,
+} );
+
 export default compose(
   withRouter,
-  connect( null, { getAuthUserData, } )
+  connect( mapStateToProps, { initializeApp, } )
 )( App );
